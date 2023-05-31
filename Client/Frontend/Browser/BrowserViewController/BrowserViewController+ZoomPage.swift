@@ -26,6 +26,7 @@ extension BrowserViewController: TabScrollingControllerDelegate {
             bottomContainer.addArrangedViewToTop(zoomPageBar, completion: {
                 self.view.layoutIfNeeded()
             })
+            zoomPageBar.setupGradientViewBottomConstraintPhoneLayout(urlBar: isBottomSearchBar ? urlBar : nil)
         }
 
         zoomPageBar.heightAnchor

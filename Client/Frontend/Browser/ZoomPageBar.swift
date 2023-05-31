@@ -11,7 +11,7 @@ protocol ZoomPageBarDelegate: AnyObject {
     func didChangeZoomLevel()
 }
 
-class ZoomPageBar: UIView, ThemeApplicable, AlphaDimmable, SearchBarLocationProvider {
+class ZoomPageBar: UIView, ThemeApplicable, AlphaDimmable {
     private struct UX {
         static let leadingTrailingPadding: CGFloat = 20
         static let topBottomPadding: CGFloat = 18
@@ -31,7 +31,6 @@ class ZoomPageBar: UIView, ThemeApplicable, AlphaDimmable, SearchBarLocationProv
         static let upperZoomLimit: CGFloat = 2.0
         static let zoomInButtonInsets = UIEdgeInsets(top: 6, left: 0, bottom: 6, right: 12)
         static let zoomOutButtonInsets = UIEdgeInsets(top: 6, left: 12, bottom: 6, right: 0)
-        static let gradientViewBottomAnchorConstant: CGFloat = 0.0
     }
 
     weak var delegate: ZoomPageBarDelegate?
@@ -187,15 +186,7 @@ class ZoomPageBar: UIView, ThemeApplicable, AlphaDimmable, SearchBarLocationProv
         gradientView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         if traitCollection.userInterfaceIdiom == .pad {
             gradientView.topAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        } else {
-            setupGradientViewBottomConstraintPhoneLayout()
         }
-    }
-
-    private func setupGradientViewBottomConstraintPhoneLayout() {
-        gradientViewBottomConstraint.isActive = false
-        gradientViewBottomConstraint = gradientView.bottomAnchor.constraint(equalTo: topAnchor, constant: isBottomSearchBar ? -UIConstants.UrlBarHeight : UX.gradientViewBottomAnchorConstant)
-        gradientViewBottomConstraint.isActive = true
     }
 
     private func remakeGradientViewHeightConstraint() {
@@ -206,13 +197,6 @@ class ZoomPageBar: UIView, ThemeApplicable, AlphaDimmable, SearchBarLocationProv
         gradientViewHeightConstraint = gradientView.heightAnchor.constraint(equalToConstant: viewPortHeight * 0.2)
         gradientViewHeightConstraint.isActive = true
         gradient.frame = gradientView.bounds
-    }
-
-    override func updateConstraints() {
-        super.updateConstraints()
-        if traitCollection.userInterfaceIdiom == .phone {
-            setupGradientViewBottomConstraintPhoneLayout()
-        }
     }
 
     private func updateZoomLabel() {
@@ -267,6 +251,14 @@ class ZoomPageBar: UIView, ThemeApplicable, AlphaDimmable, SearchBarLocationProv
             gradient.removeAnimation(forKey: "opacity")
             gradient.opacity = alpha
         }
+    }
+
+    func setupGradientViewBottomConstraintPhoneLayout(urlBar: UIView?) {
+        gradientViewBottomConstraint.isActive = false
+        if let urlBar = urlBar {
+            gradientViewBottomConstraint = gradientView.bottomAnchor.constraint(equalTo: urlBar.topAnchor)
+        } else { gradientViewBottomConstraint = gradientView.bottomAnchor.constraint(equalTo: topAnchor) }
+        gradientViewBottomConstraint.isActive = true
     }
 
     @objc

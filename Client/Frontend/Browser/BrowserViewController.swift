@@ -282,7 +282,7 @@ class BrowserViewController: UIViewController {
         updateHeaderConstraints()
         toolbar.setNeedsDisplay()
         urlBar.updateConstraints()
-        zoomPageBar?.updateConstraints()
+        zoomPageBar?.setupGradientViewBottomConstraintPhoneLayout(urlBar: isBottomSearchBar ? urlBar : nil)
     }
 
     func shouldShowToolbarForTraitCollection(_ previousTraitCollection: UITraitCollection) -> Bool {
