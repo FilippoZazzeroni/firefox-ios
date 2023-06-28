@@ -5,7 +5,7 @@
 import Storage
 import Shared
 
-class LoginListDataSourceHelper {
+class PasswordManagerListDataSourceHelper {
     private(set) var domainLookup = [GUID: (baseDomain: String?, host: String?, hostname: String)]()
 
     // Precompute the baseDomain, host, and hostname values for sorting later on. At the moment

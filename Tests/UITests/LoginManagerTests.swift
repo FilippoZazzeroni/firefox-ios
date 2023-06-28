@@ -564,13 +564,13 @@ class LoginManagerTests: KIFTestCase {
         // Check that we've selected the username field
         var firstResponder = UIApplication.shared.keyWindow?.firstResponder()
 
-        let usernameCell = list.cellForRow(at: IndexPath(row: 2, section: 0)) as! LoginDetailTableViewCell
+        let usernameCell = list.cellForRow(at: IndexPath(row: 2, section: 0)) as! PasswordManagerDetailTableViewCell
         let usernameField = usernameCell.descriptionLabel
         XCTAssertEqual(usernameField, firstResponder)
         tester().clearTextFromAndThenEnterText(intoCurrentFirstResponder: "changedusername")
         tester().tapView(withAccessibilityLabel: "next")
         firstResponder = UIApplication.shared.keyWindow?.firstResponder()
-        var passwordCell = list.cellForRow(at: IndexPath(row: 3, section: 0)) as! LoginDetailTableViewCell
+        var passwordCell = list.cellForRow(at: IndexPath(row: 3, section: 0)) as! PasswordManagerDetailTableViewCell
         let passwordField = passwordCell.descriptionLabel
 
         // Check that we've navigated to the password field upon return and that the password is no longer displaying as dots
@@ -585,7 +585,7 @@ class LoginManagerTests: KIFTestCase {
         tester().tapRow(at: IndexPath(row: 3, section: 0), in: list2)
         waitForMatcher(name: "Reveal")
 
-        passwordCell = list.cellForRow(at: IndexPath(row: 3, section: 0)) as! LoginDetailTableViewCell
+        passwordCell = list.cellForRow(at: IndexPath(row: 3, section: 0)) as! PasswordManagerDetailTableViewCell
         XCTAssertEqual(passwordCell.descriptionLabel.text, "changedpassword")
 
         tester().tapView(withAccessibilityLabel: "Logins & Passwords")
@@ -675,7 +675,7 @@ class LoginManagerTests: KIFTestCase {
         // Check that we've selected the username field
         tester().tapView(withAccessibilityIdentifier: "usernameField")
 
-        var passwordCell = list.cellForRow(at: IndexPath(row: 2, section: 0)) as! LoginDetailTableViewCell
+        var passwordCell = list.cellForRow(at: IndexPath(row: 2, section: 0)) as! PasswordManagerDetailTableViewCell
         var passwordField = passwordCell.descriptionLabel
 
         tester().tapView(withAccessibilityLabel: "next")
@@ -683,7 +683,7 @@ class LoginManagerTests: KIFTestCase {
         tester().clearTextFromView(withAccessibilityIdentifier: "passwordField")
         tester().tapView(withAccessibilityLabel: "Done")
 
-        passwordCell = list.cellForRow(at: IndexPath(row: 3, section: 0)) as! LoginDetailTableViewCell
+        passwordCell = list.cellForRow(at: IndexPath(row: 3, section: 0)) as! PasswordManagerDetailTableViewCell
         passwordField = passwordCell.descriptionLabel
 
         // Confirm that when entering a blank password we revert back to the original

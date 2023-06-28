@@ -69,7 +69,7 @@ class AddCredentialViewController: UIViewController, Themeable {
         navigationItem.rightBarButtonItem = saveButton
         navigationItem.leftBarButtonItem = cancelButton
 
-        tableView.register(cellType: LoginDetailTableViewCell.self)
+        tableView.register(cellType: PasswordManagerDetailTableViewCell.self)
         view.addSubview(tableView)
         NSLayoutConstraint.activate([
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -140,7 +140,7 @@ extension AddCredentialViewController: UITableViewDataSource {
         loginCell.delegate = self
         switch AddCredentialField(rawValue: indexPath.row)! {
         case .usernameItem:
-            let cellModel = LoginDetailTableViewCellModel(
+            let cellModel = PasswordManagerDetailTableViewCellModel(
                 title: .LoginDetailUsername,
                 keyboardType: .emailAddress,
                 returnKeyType: .next,
@@ -152,7 +152,7 @@ extension AddCredentialViewController: UITableViewDataSource {
             return loginCell
 
         case .passwordItem:
-            let cellModel = LoginDetailTableViewCellModel(
+            let cellModel = PasswordManagerDetailTableViewCellModel(
                 title: .LoginDetailPassword,
                 displayDescriptionAsPassword: true,
                 a11yId: AccessibilityIdentifiers.Settings.Passwords.passwordField,
@@ -163,7 +163,7 @@ extension AddCredentialViewController: UITableViewDataSource {
             return loginCell
 
         case .websiteItem:
-            let cellModel = LoginDetailTableViewCellModel(
+            let cellModel = PasswordManagerDetailTableViewCellModel(
                 title: .LoginDetailWebsite,
                 descriptionPlaceholder: "https://www.example.com",
                 keyboardType: .URL,
@@ -176,10 +176,10 @@ extension AddCredentialViewController: UITableViewDataSource {
         }
     }
 
-    fileprivate func cell(forIndexPath indexPath: IndexPath) -> LoginDetailTableViewCell {
-        guard let loginCell = tableView.dequeueReusableCell(withIdentifier: LoginDetailTableViewCell.cellIdentifier, for: indexPath) as? LoginDetailTableViewCell
+    fileprivate func cell(forIndexPath indexPath: IndexPath) -> PasswordManagerDetailTableViewCell {
+        guard let loginCell = tableView.dequeueReusableCell(withIdentifier: PasswordManagerDetailTableViewCell.cellIdentifier, for: indexPath) as? PasswordManagerDetailTableViewCell
         else {
-            return LoginDetailTableViewCell()
+            return PasswordManagerDetailTableViewCell()
         }
         return loginCell
     }
@@ -218,13 +218,13 @@ extension AddCredentialViewController: KeyboardHelperDelegate {
 }
 
 // MARK: - Cell Delegate
-extension AddCredentialViewController: LoginDetailTableViewCellDelegate {
-    func textFieldDidEndEditing(_ cell: LoginDetailTableViewCell) {
+extension AddCredentialViewController: PasswordManagerDetailTableViewCellDelegate {
+    func textFieldDidEndEditing(_ cell: PasswordManagerDetailTableViewCell) {
         guard cell.descriptionLabel == websiteField, let website = websiteField?.text else { return }
         websiteField.text = normalize(website: website)
     }
 
-    func textFieldDidChange(_ cell: LoginDetailTableViewCell) {
+    func textFieldDidChange(_ cell: PasswordManagerDetailTableViewCell) {
         // TODO: Add validation if necessary
         let enableSave =
             !(websiteField.text?.isEmpty ?? true) &&
@@ -234,7 +234,7 @@ extension AddCredentialViewController: LoginDetailTableViewCellDelegate {
         saveButton.isEnabled = enableSave
     }
 
-    func canPerform(action: Selector, for cell: LoginDetailTableViewCell) -> Bool {
+    func canPerform(action: Selector, for cell: PasswordManagerDetailTableViewCell) -> Bool {
         guard let item = infoItemForCell(cell) else {
             return false
         }
@@ -258,13 +258,13 @@ extension AddCredentialViewController: LoginDetailTableViewCellDelegate {
         return false
     }
 
-    fileprivate func cellForItem(_ item: AddCredentialField) -> LoginDetailTableViewCell? {
-        return tableView.cellForRow(at: item.indexPath) as? LoginDetailTableViewCell
+    fileprivate func cellForItem(_ item: AddCredentialField) -> PasswordManagerDetailTableViewCell? {
+        return tableView.cellForRow(at: item.indexPath) as? PasswordManagerDetailTableViewCell
     }
 
-    func didSelectOpenAndFillForCell(_ cell: LoginDetailTableViewCell) { }
+    func didSelectOpenAndFillForCell(_ cell: PasswordManagerDetailTableViewCell) { }
 
-    func shouldReturnAfterEditingDescription(_ cell: LoginDetailTableViewCell) -> Bool {
+    func shouldReturnAfterEditingDescription(_ cell: PasswordManagerDetailTableViewCell) -> Bool {
         switch cell.descriptionLabel {
         case websiteField:
             usernameField.becomeFirstResponder()
@@ -278,7 +278,7 @@ extension AddCredentialViewController: LoginDetailTableViewCellDelegate {
         return false
     }
 
-    func infoItemForCell(_ cell: LoginDetailTableViewCell) -> AddCredentialField? {
+    func infoItemForCell(_ cell: PasswordManagerDetailTableViewCell) -> AddCredentialField? {
         if let index = tableView.indexPath(for: cell),
             let item = AddCredentialField(rawValue: index.row) {
             return item

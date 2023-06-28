@@ -5,7 +5,7 @@
 import Foundation
 import Storage
 
-enum LoginDetailCellType: Int {
+enum PasswordManagerDetailCellType: Int {
     case breach = 0
     case website
     case username
@@ -23,13 +23,13 @@ enum LoginDetailCellType: Int {
     }
 }
 
-struct LoginDetailViewControllerModel {
+struct PasswordManagerDetailViewControllerModel {
     let profile: Profile
     var login: LoginRecord
     let webpageNavigationHandler: ((_ url: URL?) -> Void)?
     let breachRecord: BreachRecord?
 
-    private var cellTypes: [LoginDetailCellType] {
+    private var cellTypes: [PasswordManagerDetailCellType] {
         if breachRecord != nil {
             return [.breach, .website, .username, .password, .lastModifiedSeparator, .delete]
         } else {
@@ -41,11 +41,11 @@ struct LoginDetailViewControllerModel {
         cellTypes.count
     }
 
-    func cellType(atIndexPath indexPath: IndexPath) -> LoginDetailCellType? {
+    func cellType(atIndexPath indexPath: IndexPath) -> PasswordManagerDetailCellType? {
         cellTypes[indexPath.row]
     }
 
-    func indexPath(for cellType: LoginDetailCellType) -> IndexPath? {
+    func indexPath(for cellType: PasswordManagerDetailCellType) -> IndexPath? {
         guard let index = cellTypes.firstIndex(of: cellType) else { return nil }
         return IndexPath(row: index, section: 0)
     }

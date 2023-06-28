@@ -7,7 +7,7 @@ import Storage
 import Shared
 import Common
 
-class LoginDetailViewController: SensitiveViewController, Themeable {
+class PasswordManagerDetailViewController: SensitiveViewController, Themeable {
     private struct UX {
         static let horizontalMargin: CGFloat = 14
     }
@@ -32,7 +32,7 @@ class LoginDetailViewController: SensitiveViewController, Themeable {
     private var deleteAlert: UIAlertController?
     weak var settingsDelegate: SettingsDelegate?
 
-    private var viewModel: LoginDetailViewControllerModel
+    private var viewModel: PasswordManagerDetailViewControllerModel
 
     private var isEditingFieldData = false {
         didSet {
@@ -42,7 +42,7 @@ class LoginDetailViewController: SensitiveViewController, Themeable {
         }
     }
 
-    init(viewModel: LoginDetailViewControllerModel,
+    init(viewModel: PasswordManagerDetailViewControllerModel,
          themeManager: ThemeManager = AppContainer.shared.resolve(),
          notificationCenter: NotificationCenter = NotificationCenter.default) {
         self.viewModel = viewModel
@@ -67,8 +67,8 @@ class LoginDetailViewController: SensitiveViewController, Themeable {
                                                             target: self,
                                                             action: #selector(edit))
 
-        tableView.register(cellType: LoginDetailTableViewCell.self)
-        tableView.register(cellType: LoginDetailCenteredTableViewCell.self)
+        tableView.register(cellType: PasswordManagerDetailTableViewCell.self)
+        tableView.register(cellType: PasswordManagerDetailCenteredTableViewCell.self)
         tableView.register(cellType: ThemedTableViewCell.self)
         view.addSubview(tableView)
 
@@ -101,7 +101,7 @@ class LoginDetailViewController: SensitiveViewController, Themeable {
 }
 
 // MARK: - UITableViewDataSource
-extension LoginDetailViewController: UITableViewDataSource {
+extension PasswordManagerDetailViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cellType = viewModel.cellType(atIndexPath: indexPath) else { return UITableViewCell() }
 
@@ -128,8 +128,8 @@ extension LoginDetailViewController: UITableViewDataSource {
             breachDetailView.setup(breach)
             breachDetailView.applyTheme(theme: themeManager.currentTheme)
 
-            breachDetailView.learnMoreButton.addTarget(self, action: #selector(LoginDetailViewController.didTapBreachLearnMore), for: .touchUpInside)
-            let breachLinkGesture = UITapGestureRecognizer(target: self, action: #selector(LoginDetailViewController
+            breachDetailView.learnMoreButton.addTarget(self, action: #selector(PasswordManagerDetailViewController.didTapBreachLearnMore), for: .touchUpInside)
+            let breachLinkGesture = UITapGestureRecognizer(target: self, action: #selector(PasswordManagerDetailViewController
                 .didTapBreachLink(_:)))
             breachDetailView.goToButton.addGestureRecognizer(breachLinkGesture)
             breachCell.isAccessibilityElement = false
@@ -143,7 +143,7 @@ extension LoginDetailViewController: UITableViewDataSource {
             guard let loginCell = cell(tableView: tableView, forIndexPath: indexPath) else {
                 return UITableViewCell()
             }
-            let cellModel = LoginDetailTableViewCellModel(
+            let cellModel = PasswordManagerDetailTableViewCellModel(
                 title: .LoginDetailUsername,
                 description: viewModel.login.decryptedUsername,
                 keyboardType: .emailAddress,
@@ -159,7 +159,7 @@ extension LoginDetailViewController: UITableViewDataSource {
             guard let loginCell = cell(tableView: tableView, forIndexPath: indexPath) else {
                 return UITableViewCell()
             }
-            let cellModel = LoginDetailTableViewCellModel(
+            let cellModel = PasswordManagerDetailTableViewCellModel(
                 title: .LoginDetailPassword,
                 description: viewModel.login.decryptedPassword,
                 displayDescriptionAsPassword: true,
@@ -175,7 +175,7 @@ extension LoginDetailViewController: UITableViewDataSource {
             guard let loginCell = cell(tableView: tableView, forIndexPath: indexPath) else {
                 return UITableViewCell()
             }
-            let cellModel = LoginDetailTableViewCellModel(
+            let cellModel = PasswordManagerDetailTableViewCellModel(
                 title: .LoginDetailWebsite,
                 description: viewModel.login.hostname,
                 a11yId: AccessibilityIdentifiers.Settings.Passwords.websiteField)
@@ -189,8 +189,8 @@ extension LoginDetailViewController: UITableViewDataSource {
 
         case .lastModifiedSeparator:
             guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: LoginDetailCenteredTableViewCell.cellIdentifier,
-                for: indexPath) as? LoginDetailCenteredTableViewCell else {
+                withIdentifier: PasswordManagerDetailCenteredTableViewCell.cellIdentifier,
+                for: indexPath) as? PasswordManagerDetailCenteredTableViewCell else {
                 return UITableViewCell()
             }
 
@@ -198,7 +198,7 @@ extension LoginDetailViewController: UITableViewDataSource {
             let lastModified: String = .LoginDetailModifiedAt
             let lastModifiedFormatted = String(format: lastModified, Date.fromTimestamp(UInt64(viewModel.login.timePasswordChanged)).toRelativeTimeString(dateStyle: .medium))
             let createdFormatted = String(format: created, Date.fromTimestamp(UInt64(viewModel.login.timeCreated)).toRelativeTimeString(dateStyle: .medium, timeStyle: .none))
-            let cellModel = LoginDetailCenteredTableViewCellModel(
+            let cellModel = PasswordManagerDetailCenteredTableViewCellModel(
                 label: createdFormatted + "\n" + lastModifiedFormatted)
             cell.configure(viewModel: cellModel)
             setCellSeparatorHidden(cell)
@@ -223,9 +223,9 @@ extension LoginDetailViewController: UITableViewDataSource {
         }
     }
 
-    private func cell(tableView: UITableView, forIndexPath indexPath: IndexPath) -> LoginDetailTableViewCell? {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: LoginDetailTableViewCell.cellIdentifier,
-                                                       for: indexPath) as? LoginDetailTableViewCell else {
+    private func cell(tableView: UITableView, forIndexPath indexPath: IndexPath) -> PasswordManagerDetailTableViewCell? {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: PasswordManagerDetailTableViewCell.cellIdentifier,
+                                                       for: indexPath) as? PasswordManagerDetailTableViewCell else {
             return nil
         }
         cell.selectionStyle = .none
@@ -253,11 +253,11 @@ extension LoginDetailViewController: UITableViewDataSource {
 }
 
 // MARK: - UITableViewDelegate
-extension LoginDetailViewController: UITableViewDelegate {
+extension PasswordManagerDetailViewController: UITableViewDelegate {
     private func showMenuOnSingleTap(forIndexPath indexPath: IndexPath) {
         guard let cellType = viewModel.cellType(atIndexPath: indexPath),
             cellType.shouldShowMenu,
-            let cell = tableView.cellForRow(at: indexPath) as? LoginDetailTableViewCell
+            let cell = tableView.cellForRow(at: indexPath) as? PasswordManagerDetailTableViewCell
         else { return }
 
         cell.becomeFirstResponder()
@@ -267,7 +267,7 @@ extension LoginDetailViewController: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath == viewModel.indexPath(for: LoginDetailCellType.delete) {
+        if indexPath == viewModel.indexPath(for: PasswordManagerDetailCellType.delete) {
             deleteLogin()
         } else if !isEditingFieldData {
             showMenuOnSingleTap(forIndexPath: indexPath)
@@ -282,7 +282,7 @@ extension LoginDetailViewController: UITableViewDelegate {
 }
 
 // MARK: - KeyboardHelperDelegate
-extension LoginDetailViewController: KeyboardHelperDelegate {
+extension PasswordManagerDetailViewController: KeyboardHelperDelegate {
     func keyboardHelper(_ keyboardHelper: KeyboardHelper, keyboardWillShowWithState state: KeyboardState) {
         let coveredHeight = state.intersectionHeightForView(tableView)
         tableView.contentInset.bottom = coveredHeight
@@ -294,7 +294,7 @@ extension LoginDetailViewController: KeyboardHelperDelegate {
 }
 
 // MARK: - Selectors
-extension LoginDetailViewController {
+extension PasswordManagerDetailViewController {
     @objc
     func dismissAlertController() {
         deleteAlert?.dismiss(animated: false, completion: nil)
@@ -338,8 +338,8 @@ extension LoginDetailViewController {
     @objc
     func edit() {
         isEditingFieldData = true
-        guard let indexPath = viewModel.indexPath(for: LoginDetailCellType.username),
-                let cell = tableView.cellForRow(at: indexPath) as? LoginDetailTableViewCell else { return }
+        guard let indexPath = viewModel.indexPath(for: PasswordManagerDetailCellType.username),
+                let cell = tableView.cellForRow(at: indexPath) as? PasswordManagerDetailTableViewCell else { return }
         cell.descriptionLabel.becomeFirstResponder()
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneEditing))
     }
@@ -384,11 +384,11 @@ extension LoginDetailViewController {
 }
 
 // MARK: - Cell Delegate
-extension LoginDetailViewController: LoginDetailTableViewCellDelegate {
-    func textFieldDidEndEditing(_ cell: LoginDetailTableViewCell) { }
-    func textFieldDidChange(_ cell: LoginDetailTableViewCell) { }
+extension PasswordManagerDetailViewController: PasswordManagerDetailTableViewCellDelegate {
+    func textFieldDidEndEditing(_ cell: PasswordManagerDetailTableViewCell) { }
+    func textFieldDidChange(_ cell: PasswordManagerDetailTableViewCell) { }
 
-    func canPerform(action: Selector, for cell: LoginDetailTableViewCell) -> Bool {
+    func canPerform(action: Selector, for cell: PasswordManagerDetailTableViewCell) -> Bool {
         guard let item = infoItemForCell(cell) else { return false }
 
         switch item {
@@ -407,12 +407,12 @@ extension LoginDetailViewController: LoginDetailTableViewCellDelegate {
         }
     }
 
-    private func cellForItem(_ cellType: LoginDetailCellType) -> LoginDetailTableViewCell? {
+    private func cellForItem(_ cellType: PasswordManagerDetailCellType) -> PasswordManagerDetailTableViewCell? {
         guard let indexPath = viewModel.indexPath(for: cellType) else { return nil }
-        return tableView.cellForRow(at: indexPath) as? LoginDetailTableViewCell
+        return tableView.cellForRow(at: indexPath) as? PasswordManagerDetailTableViewCell
     }
 
-    func didSelectOpenAndFillForCell(_ cell: LoginDetailTableViewCell) {
+    func didSelectOpenAndFillForCell(_ cell: PasswordManagerDetailTableViewCell) {
         guard let url = (viewModel.login.formSubmitUrl?.asURL ?? viewModel.login.hostname.asURL) else { return }
 
         navigationController?.dismiss(animated: true, completion: {
@@ -420,7 +420,7 @@ extension LoginDetailViewController: LoginDetailTableViewCellDelegate {
         })
     }
 
-    func shouldReturnAfterEditingDescription(_ cell: LoginDetailTableViewCell) -> Bool {
+    func shouldReturnAfterEditingDescription(_ cell: PasswordManagerDetailTableViewCell) -> Bool {
         let usernameCell = cellForItem(.username)
         let passwordCell = cellForItem(.password)
 
@@ -431,7 +431,7 @@ extension LoginDetailViewController: LoginDetailTableViewCellDelegate {
         return false
     }
 
-    func infoItemForCell(_ cell: LoginDetailTableViewCell) -> LoginDetailCellType? {
+    func infoItemForCell(_ cell: PasswordManagerDetailTableViewCell) -> PasswordManagerDetailCellType? {
         if let indexPath = tableView.indexPath(for: cell),
            let item = viewModel.cellType(atIndexPath: indexPath) {
             return item

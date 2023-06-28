@@ -6,18 +6,18 @@ import UIKit
 import Shared
 import Common
 
-struct LoginDetailCenteredTableViewCellModel {
+struct PasswordManagerDetailCenteredTableViewCellModel {
     let label: String
 }
 
-class LoginDetailCenteredTableViewCell: UITableViewCell, ThemeApplicable, ReusableCell {
+class PasswordManagerDetailCenteredTableViewCell: UITableViewCell, ThemeApplicable, ReusableCell {
     struct UX {
         static let fontSize: CGFloat = 12
         static let spacingTopBottom: CGFloat = 26
         static let spacingLeadingTrailing: CGFloat = 16
     }
 
-    private var viewModel: LoginDetailCenteredTableViewCellModel?
+    private var viewModel: PasswordManagerDetailCenteredTableViewCellModel?
 
     private lazy var centeredLabel: UILabel = .build { label in
         label.font = DynamicFontHelper.defaultHelper.preferredFont(withTextStyle: .callout, size: UX.fontSize)
@@ -31,7 +31,7 @@ class LoginDetailCenteredTableViewCell: UITableViewCell, ThemeApplicable, Reusab
         setupLayout()
     }
 
-    func configure(viewModel: LoginDetailCenteredTableViewCellModel) {
+    func configure(viewModel: PasswordManagerDetailCenteredTableViewCellModel) {
         self.viewModel = viewModel
         centeredLabel.text = viewModel.label
         selectionStyle = .none

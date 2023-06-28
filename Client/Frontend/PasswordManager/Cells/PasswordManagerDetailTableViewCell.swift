@@ -6,15 +6,15 @@ import UIKit
 import Storage
 import Shared
 
-protocol LoginDetailTableViewCellDelegate: AnyObject {
-    func didSelectOpenAndFillForCell(_ cell: LoginDetailTableViewCell)
-    func shouldReturnAfterEditingDescription(_ cell: LoginDetailTableViewCell) -> Bool
-    func canPerform(action: Selector, for cell: LoginDetailTableViewCell) -> Bool
-    func textFieldDidChange(_ cell: LoginDetailTableViewCell)
-    func textFieldDidEndEditing(_ cell: LoginDetailTableViewCell)
+protocol PasswordManagerDetailTableViewCellDelegate: AnyObject {
+    func didSelectOpenAndFillForCell(_ cell: PasswordManagerDetailTableViewCell)
+    func shouldReturnAfterEditingDescription(_ cell: PasswordManagerDetailTableViewCell) -> Bool
+    func canPerform(action: Selector, for cell: PasswordManagerDetailTableViewCell) -> Bool
+    func textFieldDidChange(_ cell: PasswordManagerDetailTableViewCell)
+    func textFieldDidEndEditing(_ cell: PasswordManagerDetailTableViewCell)
 }
 
-struct LoginDetailTableViewCellModel {
+struct PasswordManagerDetailTableViewCellModel {
     let title: String
     var description: String?
     var descriptionPlaceholder: String?
@@ -23,12 +23,12 @@ struct LoginDetailTableViewCellModel {
     var displayDescriptionAsPassword = false
     let a11yId: String
     var isEditingFieldData = false
-    var cellType: LoginDetailTableViewCell.CellType {
+    var cellType: PasswordManagerDetailTableViewCell.CellType {
         isEditingFieldData ? .editingFieldData: .standard
     }
 }
 
-class LoginDetailTableViewCell: UITableViewCell, ThemeApplicable, ReusableCell, UITextFieldDelegate, MenuHelperInterface {
+class PasswordManagerDetailTableViewCell: UITableViewCell, ThemeApplicable, ReusableCell, UITextFieldDelegate, MenuHelperInterface {
     private struct UX {
         static let highlightedFontSize: CGFloat = 12
         static let descriptionFontSize: CGFloat = 16
@@ -41,8 +41,8 @@ class LoginDetailTableViewCell: UITableViewCell, ThemeApplicable, ReusableCell, 
         case editingFieldData
     }
 
-    private var viewModel: LoginDetailTableViewCellModel?
-    weak var delegate: LoginDetailTableViewCellDelegate?
+    private var viewModel: PasswordManagerDetailTableViewCellModel?
+    weak var delegate: PasswordManagerDetailTableViewCellDelegate?
 
     private lazy var labelContainer: UIView = .build { _ in }
 
@@ -113,7 +113,7 @@ class LoginDetailTableViewCell: UITableViewCell, ThemeApplicable, ReusableCell, 
         preservesSuperviewLayoutMargins = false
     }
 
-    func configure(viewModel: LoginDetailTableViewCellModel) {
+    func configure(viewModel: PasswordManagerDetailTableViewCellModel) {
         self.viewModel = viewModel
         highlightedLabel.text = viewModel.title
         descriptionLabel.text = viewModel.description

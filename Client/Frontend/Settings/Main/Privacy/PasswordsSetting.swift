@@ -4,7 +4,7 @@
 
 import Foundation
 
-class LoginsSetting: Setting {
+class PasswordsSetting: Setting {
     let profile: Profile
     var tabManager: TabManager!
     private let appAuthenticator: AppAuthenticationProtocol
@@ -52,15 +52,15 @@ class LoginsSetting: Setting {
         }
 
         if appAuthenticator.canAuthenticateDeviceOwner {
-            if LoginOnboarding.shouldShow() {
-                let loginOnboardingViewController = LoginOnboardingViewController(profile: profile, tabManager: tabManager)
+            if PasswordManagerOnboarding.shouldShow() {
+                let loginOnboardingViewController = PasswordManagerOnboardingViewController(profile: profile, tabManager: tabManager)
 
                 loginOnboardingViewController.doneHandler = {
                     loginOnboardingViewController.dismiss(animated: true)
                 }
 
                 loginOnboardingViewController.proceedHandler = {
-                    LoginListViewController.create(
+                    PasswordManagerListViewController.create(
                         didShowFromAppMenu: false,
                         authenticateInNavigationController: navController,
                         profile: self.profile,
@@ -77,9 +77,9 @@ class LoginsSetting: Setting {
 
                 navigationController?.pushViewController(loginOnboardingViewController, animated: true)
 
-                LoginOnboarding.setShown()
+                PasswordManagerOnboarding.setShown()
             } else {
-                LoginListViewController.create(
+                PasswordManagerListViewController.create(
                     didShowFromAppMenu: false,
                     authenticateInNavigationController: navController,
                     profile: profile,

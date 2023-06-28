@@ -13,13 +13,13 @@ struct NewSearchInProgressError: MaybeErrorType {
 
 // MARK: - Main View Model
 // Login List View Model
-final class LoginListViewModel {
+final class PasswordManagerListViewModel {
     private(set) var profile: Profile
     private(set) var isDuringSearchControllerDismiss = false
     private(set) var count = 0
     private(set) var hasData = false
     weak var searchController: UISearchController?
-    weak var delegate: LoginViewModelDelegate?
+    weak var delegate: PasswordManagerViewModelDelegate?
     private(set) var titles = [Character]()
     private(set) var loginRecordSections = [Character: [LoginRecord]]() {
         didSet {
@@ -28,8 +28,8 @@ final class LoginListViewModel {
             }
         }
     }
-    let listSelectionHelper = LoginListSelectionHelper()
-    fileprivate let helper = LoginListDataSourceHelper()
+    let listSelectionHelper = PasswordManagerListSelectionHelper()
+    fileprivate let helper = PasswordManagerListDataSourceHelper()
     private(set) lazy var breachAlertsManager: BreachAlertsManager = {
         return BreachAlertsManager(profile: self.profile)
     }()
@@ -48,7 +48,7 @@ final class LoginListViewModel {
         self.theme = theme
     }
 
-    func loadLogins(_ query: String? = nil, loginDataSource: LoginDataSource) {
+    func loadLogins(_ query: String? = nil, loginDataSource: PasswordManagerDataSource) {
         // Fill in an in-flight query and re-query
         queryLogins(query ?? "") { [weak self] logins in
             self?.setLogins(logins)
@@ -169,7 +169,7 @@ final class LoginListViewModel {
     }
 
     // MARK: - UX Constants
-    struct LoginListUX {
+    struct PasswordManagerListUX {
         static let rowHeight: CGFloat = 58
         static let searchHeight: CGFloat = 58
         static let selectionButtonFont = UIFont.systemFont(ofSize: 16)
@@ -177,8 +177,8 @@ final class LoginListViewModel {
     }
 }
 
-// MARK: - LoginDataSourceViewModelDelegate
-protocol LoginViewModelDelegate: AnyObject {
+// MARK: - PasswordManagerDataSourceViewModelDelegate
+protocol PasswordManagerViewModelDelegate: AnyObject {
     func loginSectionsDidUpdate()
     func breachPathDidUpdate()
 }

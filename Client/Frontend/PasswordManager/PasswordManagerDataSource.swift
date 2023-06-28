@@ -6,14 +6,14 @@ import Foundation
 import Shared
 
 /// Data source for handling LoginData objects from a Cursor
-class LoginDataSource: NSObject, UITableViewDataSource {
+class PasswordManagerDataSource: NSObject, UITableViewDataSource {
     // in case there are no items to run cellForRowAt on, use an empty state view
     private let emptyStateView = NoLoginsView()
-    var viewModel: LoginListViewModel
+    var viewModel: PasswordManagerListViewModel
 
     let boolSettings: (BoolSetting, BoolSetting)
 
-    init(viewModel: LoginListViewModel) {
+    init(viewModel: PasswordManagerListViewModel) {
         self.viewModel = viewModel
         boolSettings = (
             BoolSetting(prefs: viewModel.profile.prefs,
@@ -41,7 +41,7 @@ class LoginDataSource: NSObject, UITableViewDataSource {
 
     @objc
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == LoginListViewController.loginsSettingsSection {
+        if section == PasswordManagerListViewController.loginsSettingsSection {
             return 2
         }
         return viewModel.loginsForSection(section)?.count ?? 0
@@ -49,9 +49,9 @@ class LoginDataSource: NSObject, UITableViewDataSource {
 
     @objc
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == LoginListViewController.loginsSettingsSection,
-           let cell = tableView.dequeueReusableCell(withIdentifier: LoginListTableViewSettingsCell.cellIdentifier,
-                                                    for: indexPath) as? LoginListTableViewSettingsCell {
+        if indexPath.section == PasswordManagerListViewController.loginsSettingsSection,
+           let cell = tableView.dequeueReusableCell(withIdentifier: PasswordManagerListTableViewSettingsCell.cellIdentifier,
+                                                    for: indexPath) as? PasswordManagerListTableViewSettingsCell {
             let hideSettings = viewModel.searchController?.isActive ?? false || tableView.isEditing
             let setting = indexPath.row == 0 ? boolSettings.0 : boolSettings.1
             setting.onConfigureCell(cell, theme: viewModel.theme)
@@ -68,8 +68,8 @@ class LoginDataSource: NSObject, UITableViewDataSource {
                 }
             }
             return cell
-        } else if let cell = tableView.dequeueReusableCell(withIdentifier: LoginListTableViewCell.cellIdentifier,
-                                                           for: indexPath) as? LoginListTableViewCell {
+        } else if let cell = tableView.dequeueReusableCell(withIdentifier: PasswordManagerListTableViewCell.cellIdentifier,
+                                                           for: indexPath) as? PasswordManagerListTableViewCell {
             guard let login = viewModel.loginAtIndexPath(indexPath) else { return cell }
             let username = login.decryptedUsername
             cell.hostnameLabel.text = login.hostname

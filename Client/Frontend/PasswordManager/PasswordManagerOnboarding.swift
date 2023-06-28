@@ -4,7 +4,7 @@
 
 import Foundation
 
-struct LoginOnboarding {
+struct PasswordManagerOnboarding {
     static let HasSeenLoginOnboardingKey = "HasSeenLoginOnboarding"
 
     static func shouldShow() -> Bool {

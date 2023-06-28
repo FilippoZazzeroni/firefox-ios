@@ -792,7 +792,7 @@ class MainMenuActionHelper: PhotonActionSheetProtocol,
 
     typealias NavigationHandlerType = (_ url: URL?) -> Void
     private func getPasswordAction(navigationController: UINavigationController?) -> PhotonRowActions? {
-        guard LoginListViewController.shouldShowAppMenuShortcut(forPrefs: profile.prefs),
+        guard PasswordManagerListViewController.shouldShowAppMenuShortcut(forPrefs: profile.prefs),
               let navigationController = navigationController
         else { return nil }
 
@@ -806,7 +806,7 @@ class MainMenuActionHelper: PhotonActionSheetProtocol,
             }
 
             if self.appAuthenticator.canAuthenticateDeviceOwner {
-                if LoginOnboarding.shouldShow() {
+                if PasswordManagerOnboarding.shouldShow() {
                     self.showLoginOnboarding(navigationHandler: navigationHandler, navigationController: navigationController)
                 } else {
                     self.showLoginListVC(navigationHandler: navigationHandler, navigationController: navigationController)
@@ -820,7 +820,7 @@ class MainMenuActionHelper: PhotonActionSheetProtocol,
     }
 
     private func showLoginOnboarding(navigationHandler: @escaping NavigationHandlerType, navigationController: UINavigationController) {
-        let loginOnboardingViewController = LoginOnboardingViewController(shownFromAppMenu: true)
+        let loginOnboardingViewController = PasswordManagerOnboardingViewController(shownFromAppMenu: true)
         loginOnboardingViewController.doneHandler = {
             loginOnboardingViewController.dismiss(animated: true)
         }
@@ -834,12 +834,12 @@ class MainMenuActionHelper: PhotonActionSheetProtocol,
         let navController = ThemedNavigationController(rootViewController: loginOnboardingViewController)
         delegate?.showViewController(viewController: navController)
 
-        LoginOnboarding.setShown()
+        PasswordManagerOnboarding.setShown()
     }
 
     private func showLoginListVC(navigationHandler: @escaping NavigationHandlerType, navigationController: UINavigationController) {
         guard let menuActionDelegate = menuActionDelegate else { return }
-        LoginListViewController.create(
+        PasswordManagerListViewController.create(
             didShowFromAppMenu: true,
             authenticateInNavigationController: navigationController,
             profile: self.profile,
@@ -850,7 +850,7 @@ class MainMenuActionHelper: PhotonActionSheetProtocol,
         }
     }
 
-    private func presentLoginList(_ loginsVC: LoginListViewController?) {
+    private func presentLoginList(_ loginsVC: PasswordManagerListViewController?) {
         guard let loginsVC = loginsVC else { return }
         let navController = ThemedNavigationController(rootViewController: loginsVC)
         delegate?.showViewController(viewController: navController)
