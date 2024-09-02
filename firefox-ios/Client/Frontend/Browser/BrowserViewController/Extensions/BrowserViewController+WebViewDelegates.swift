@@ -551,7 +551,9 @@ extension BrowserViewController: WKNavigationDelegate {
             return
         }
 
-        if !(url.scheme?.contains("firefox") ?? true) {
+        let shouldBlockOpeningExternalApps = profile.prefs.boolForKey(PrefsKeys.BlockOpeningExternalApps) ?? false
+
+        if !(url.scheme?.contains("firefox") ?? true) && !shouldBlockOpeningExternalApps {
             showSnackbar(forExternalUrl: url, tab: tab) { isOk in
                 guard isOk else { return }
                 UIApplication.shared.open(url, options: [:]) { openedURL in
