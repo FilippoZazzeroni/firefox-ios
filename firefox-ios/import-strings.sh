@@ -2,6 +2,7 @@
 echo "\n\n[*] Building tools/Localizations"
 (cd LocalizationTools && swift build)
 
+python3 "firefoxios-l10n/.github/scripts/rewrite_original_attribute.py" --path "firefoxios-l10n"
 echo "\n\n[*] Importing Strings - takes a minute. (output in import-strings.log)"
 (cd LocalizationTools && swift run LocalizationTools \
   --import \
