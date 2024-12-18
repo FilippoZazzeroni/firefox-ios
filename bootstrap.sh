@@ -12,10 +12,6 @@ getLocale() {
   echo "Getting locale..."
   rm -rf LocalizationTools
   git clone https://github.com/mozilla-mobile/LocalizationTools.git || exit 1
-
-  echo "Creating firefoxios-l10n Git repo"
-  rm -rf firefoxios-l10n
-  git clone --depth 1 https://github.com/mozilla-l10n/firefoxios-l10n firefoxios-l10n || exit 1
 }
 
 if [ "$1" == "--force" ]; then
