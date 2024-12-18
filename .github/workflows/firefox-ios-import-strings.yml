@@ -63,13 +63,13 @@ jobs:
         fi
 
     - name: Clone l10n iOS repository
-        uses: actions/checkout@v4
-        with:
-          repository: "mozilla-l10n/firefoxios-l10n"
+      uses: actions/checkout@v4
+      with:
+        repository: "mozilla-l10n/firefoxios-l10n"
 
     - name: Install Python dependencies
-        run: |
-          pip install -r firefoxios-l10n/.github/scripts/requirements.txt
+      run: |
+        pip install -r firefoxios-l10n/.github/scripts/requirements.txt
 
     - name: Run script to import strings
       run: sh ./bootstrap.sh --importLocales
