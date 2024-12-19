@@ -68,12 +68,18 @@ jobs:
         repository: "mozilla-l10n/firefoxios-l10n"
         path: "firefoxios-l10n"
 
+    - name: Clone Localization Tools
+      uses: actions/checkout@v4
+      with:
+        repository: "FilippoZazzeroni/LocalizationTools"
+        path: "LocalizationTools"
+
     - name: Install Python dependencies
       run: |
         pip install -r firefoxios-l10n/.github/scripts/requirements.txt
 
     - name: Run script to import strings
-      run: sh ./bootstrap.sh --importLocales
+      run: sh ./firefox-ios/import-strings.sh
 
     - name: Update new strings
       run: |-
