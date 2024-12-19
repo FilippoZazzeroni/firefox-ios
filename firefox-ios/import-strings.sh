@@ -6,7 +6,7 @@ if [ -d "LocalizationTools" ] || [ -d "firefoxios-l10n" ]; then
     rm -rf firefoxios-l10n
 fi
 
-git clone https://github.com/mozilla-mobile/LocalizationTools.git || exit 1
+git clone https://github.com/FilippoZazzeroni/LocalizationTools.git || exit 1
 git clone --depth 1 https://github.com/mozilla-l10n/firefoxios-l10n || exit 1
 
 pip install -r firefoxios-l10n/.github/scripts/requirements.txt
