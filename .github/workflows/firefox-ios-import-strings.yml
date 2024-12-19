@@ -44,7 +44,7 @@ jobs:
     - name: Clone Localization Tools
       uses: actions/checkout@v4
       with:
-        repository: "mozilla-mobile/LocalizationTools"
+        repository: "FilippoZazzeroni/LocalizationTools"
         path: "LocalizationTools"
 
     - name: Determine PR Version Number
