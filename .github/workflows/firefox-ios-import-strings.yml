@@ -78,6 +78,11 @@ jobs:
       run: |
         pip install -r firefoxios-l10n/.github/scripts/requirements.txt
 
+    - name: Prepare Xliff files to import
+      run: |
+        # Change all the Xliff files original from en.lproj to en-US.lproj so they can be imported correctly
+        python3 "firefoxios-l10n/.github/scripts/rewrite_original_attribute.py" --path "firefoxios-l10n"
+        
     - name: Run script to import strings
       run: sh ./firefox-ios/import-strings.sh
 
