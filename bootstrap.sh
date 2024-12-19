@@ -11,7 +11,7 @@
 getLocale() {
   echo "Getting locale..."
   rm -rf LocalizationTools
-  git clone https://github.com/mozilla-mobile/LocalizationTools.git || exit 1
+  git clone https://github.com/FilippoZazzeroni/LocalizationTools.git || exit 1
 }
 
 if [ "$1" == "--force" ]; then
